@@ -4,7 +4,7 @@ import main
 import dialog
 import engine
 from errors import NError
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore, QtGui
 
 class MainApp(QtWidgets.QMainWindow, main.Ui_MainWindow):
     def __init__(self):
@@ -12,6 +12,15 @@ class MainApp(QtWidgets.QMainWindow, main.Ui_MainWindow):
         self.setupUi(self)
         self.action.triggered.connect(self.load)
         self.engine = None
+        self.scene = QtWidgets.QGraphicsScene(self)
+        self.graphicsView.setScene(self.scene)
+        self.gw = 700
+        self.gh = 400
+        self.graphicsView.setSceneRect(0,0,self.gw,self.gh)
+        self.pen = QtGui.QPen(QtCore.Qt.red)
+        self.brush = QtGui.QBrush(QtCore.Qt.red)
+        #self.scene.addRect(0,0,700,400,self.pen,self.brush)
+
 
     def load(self):
         fd = FileApp()
@@ -20,6 +29,10 @@ class MainApp(QtWidgets.QMainWindow, main.Ui_MainWindow):
         if fd.engine:
             self.engine = fd.engine
             self.label.setText(os.path.split(self.engine.fname)[1])
+            rects = self.engine.getRects(self.gw,self.gh)
+            for r in rects:
+                self.scene.addRect(r[0],r[1],r[2],r[3],self.pen)
+
 
 class FileApp(QtWidgets.QDialog, dialog.Ui_Dialog):
     def __init__(self):
