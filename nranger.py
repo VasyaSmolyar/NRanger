@@ -17,10 +17,6 @@ class MainApp(QtWidgets.QMainWindow, main.Ui_MainWindow):
         self.gw = 700
         self.gh = 400
         self.graphicsView.setSceneRect(0,0,self.gw,self.gh)
-        self.pen = QtGui.QPen(QtCore.Qt.red)
-        self.brush = QtGui.QBrush(QtCore.Qt.red)
-        #self.scene.addRect(0,0,700,400,self.pen,self.brush)
-
 
     def load(self):
         fd = FileApp()
@@ -29,10 +25,13 @@ class MainApp(QtWidgets.QMainWindow, main.Ui_MainWindow):
         if fd.engine:
             self.engine = fd.engine
             self.label.setText(os.path.split(self.engine.fname)[1])
-            rects = self.engine.getRects(self.gw,self.gh)
+            self.engine.prepare()
+            rects, norms = self.engine.getRects(self.gw,self.gh)
+            self.scene.clear()
+            for n in norms:
+                self.scene.addRect(n[0],n[1],n[2],n[3],QtGui.QPen(QtCore.Qt.blue))
             for r in rects:
-                self.scene.addRect(r[0],r[1],r[2],r[3],self.pen)
-
+                self.scene.addRect(r[0],r[1],r[2],r[3],QtGui.QPen(QtCore.Qt.red))
 
 class FileApp(QtWidgets.QDialog, dialog.Ui_Dialog):
     def __init__(self):
