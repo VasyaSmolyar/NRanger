@@ -18,6 +18,7 @@ class NEngine():
         self.normal = []
         self.qu = 1 # Дисперсия
         self.ma = 0 # Мат ожидание
+        self.mnorm = 0
 
     def phi(self, x):
         a = -((x - self.ma) ** 2) / (2 * (self.qu ** 2))
@@ -40,6 +41,12 @@ class NEngine():
             for i in range(self.count):
                 c = i-(self.count/2)
                 pack[i] = self.phi(((c*self.qu) + (c+1)*self.qu)/2)
+            s = sum(pack)
+            for i in range(len(pack)):
+                pack[i] /= s
+                pack[i] *= 100
+            if max(pack) > self.mnorm:
+                self.mnorm = max(pack)
             self.normal.append(pack)
 
     def prepare(self):
@@ -62,10 +69,10 @@ class NEngine():
             for data in frac:
                 dt.append(data)
         sw = gw / (len(dt) * 1.5)
-        sh = gh / (max(dt) * 1.5)
+        sh = gh / (max(dt) * 3)
         w = len(dt) * 3
         old = w
-        h = gh / 2 + (max(dt) * 3)
+        h = gh / 2
         rects = []
         norms = []
         for frac in self.prepared:
@@ -74,7 +81,9 @@ class NEngine():
                 w += sw
             w += sw
         w = old
-        sh = 6 * gh / max(dt)
+        #sh = 6 * gh / max(dt)
+        sh = gh / (self.mnorm * 3)
+        h = gh * 11 / 12
         for frac in self.normal:
             for data in frac:
                 norms.append((w,h - (sh * data),sw,sh * data))

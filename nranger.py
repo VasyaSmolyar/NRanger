@@ -32,7 +32,12 @@ class MainApp(QtWidgets.QMainWindow, main.Ui_MainWindow):
                 self.scene.addRect(n[0],n[1],n[2],n[3],QtGui.QPen(QtCore.Qt.blue))
             for r in rects:
                 self.scene.addRect(r[0],r[1],r[2],r[3],QtGui.QPen(QtCore.Qt.red))
-
+            sw = self.gw / len(self.engine.data)
+            w = 0
+            for name in self.engine.data:
+                text = self.scene.addText(name,QtGui.QFont("Times", 14))
+                text.setX(w)
+                w += sw
 class FileApp(QtWidgets.QDialog, dialog.Ui_Dialog):
     def __init__(self):
         super().__init__()
