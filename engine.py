@@ -19,6 +19,7 @@ class NEngine():
         self.qu = 1 # Дисперсия
         self.ma = 0 # Мат ожидание
         self.mnorm = 0
+        self.w = 0
 
     def phi(self, x):
         a = -((x - self.ma) ** 2) / (2 * (self.qu ** 2))
@@ -71,6 +72,7 @@ class NEngine():
         sw = gw / (len(dt) * 1.5)
         sh = gh / (max(dt) * 3)
         w = len(dt) * 3
+        self.w = w
         old = w
         h = gh / 2
         rects = []

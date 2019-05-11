@@ -32,8 +32,8 @@ class MainApp(QtWidgets.QMainWindow, main.Ui_MainWindow):
                 self.scene.addRect(n[0],n[1],n[2],n[3],QtGui.QPen(QtCore.Qt.blue))
             for r in rects:
                 self.scene.addRect(r[0],r[1],r[2],r[3],QtGui.QPen(QtCore.Qt.red))
-            sw = self.gw / len(self.engine.data)
-            w = 0
+            w = self.engine.w
+            sw = self.gw / len(self.engine.data) - (w*2 / self.engine.count)
             for name in self.engine.data:
                 text = self.scene.addText(name,QtGui.QFont("Times", 14))
                 text.setX(w)
